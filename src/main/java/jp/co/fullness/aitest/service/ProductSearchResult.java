@@ -7,5 +7,6 @@ public record ProductSearchResult(
         String name,
         Integer price,
         String categoryName,
-        Integer stock
+        Integer stock,
+        Integer salePrice
 ) {}

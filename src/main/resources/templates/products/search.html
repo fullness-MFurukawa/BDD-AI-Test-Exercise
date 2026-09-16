@@ -86,7 +86,18 @@
                     <div class="text-muted small">ID: <span th:text="${r.productId()}">0</span></div>
                   </td>
                   <td>
-                    <span th:text="${#numbers.formatInteger(r.price(), 0, 'COMMA')}">0</span> 円
+                    <!-- セール期間中はセール価格を表示 -->
+                    <div th:if="${r.salePrice() != null}">
+                      <span class="text-danger fw-bold"
+                            th:text="${#numbers.formatInteger(r.salePrice(), 0, 'COMMA')}">0</span> 円
+                      <span class="badge text-bg-danger">セール中</span>
+                      <div class="text-muted small text-decoration-line-through"
+                           th:text="${#numbers.formatInteger(r.price(), 0, 'COMMA')} + ' 円'">0 円</div>
+                      </div>
+                      <div th:if="${r.salePrice() == null}">
+                        <span th:text="${#numbers.formatInteger(r.price(), 0, 'COMMA')}">0</span> 円
+                      </div>
+                    </div>
                   </td>
                   <td th:text="${r.categoryName()}">カテゴリ</td>
                   <td>

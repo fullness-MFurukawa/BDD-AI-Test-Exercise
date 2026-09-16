@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import jp.co.fullness.aitest.infrastructure.entity.Product;
+import jp.co.fullness.aitest.infrastructure.entity.Sale;
 import jp.co.fullness.aitest.service.ProductSearchResult;
 
 /**
@@ -39,12 +40,35 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      */
     boolean existsByName(String name);
 
-
     /**
      * 商品キーワード検索
      * @param keyword キーワード
      * @return 検索結果
      */
+    @Query("""
+    select new jp.co.fullness.aitest.service.ProductSearchResult(
+        p.id,
+        p.name,
+        p.price,
+        c.name,
+        s.stock,
+        sale.salePrice
+    )
+    from Product p
+    join p.category c
+    join ProductStock s on s.product = p
+    left join Sale sale on sale.product = p
+        and sale.startDate <= :today and sale.endDate >= :today
+    where (:keyword is null or :keyword = '' or lower(p.name) like lower(concat('%', :keyword, '%')))
+    order by p.id
+    """)
+    List<ProductSearchResult> searchByNameKeywordWithCategoryAndStock(@Param("keyword") String keyword,
+                                                                      @Param("today") java.time.LocalDate today);
+
+    /**
+     * 商品キーワード検索
+     * @param keyword キーワード
+     * @return 検索結果
     @Query("""
         select new jp.co.fullness.aitest.service.ProductSearchResult(
             p.id,
@@ -60,4 +84,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
         order by p.id
     """)
     List<ProductSearchResult> searchByNameKeywordWithCategoryAndStock(@Param("keyword") String keyword);
+    */
 }

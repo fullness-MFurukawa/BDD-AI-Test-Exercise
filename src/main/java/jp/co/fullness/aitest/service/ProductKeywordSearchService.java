@@ -25,6 +25,7 @@ public class ProductKeywordSearchService {
      */
     @Transactional(readOnly=true)
     public List<ProductSearchResult> search(String keyword) {
-        return productRepository.searchByNameKeywordWithCategoryAndStock(keyword);
+        return productRepository.searchByNameKeywordWithCategoryAndStock(keyword, java.time.LocalDate.now());
+        //return productRepository.searchByNameKeywordWithCategoryAndStock(keyword);
     }
 }
