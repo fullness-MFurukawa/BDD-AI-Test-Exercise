@@ -79,7 +79,7 @@
                   <th style="width: 15%;">在庫</th>
                 </tr>
               </thead>
-              <tbody>
+                            <tbody>
                 <tr th:each="r : ${results}">
                   <td>
                     <div class="fw-semibold" th:text="${r.name()}">商品名</div>
@@ -93,10 +93,9 @@
                       <span class="badge text-bg-danger">セール中</span>
                       <div class="text-muted small text-decoration-line-through"
                            th:text="${#numbers.formatInteger(r.price(), 0, 'COMMA')} + ' 円'">0 円</div>
-                      </div>
-                      <div th:if="${r.salePrice() == null}">
-                        <span th:text="${#numbers.formatInteger(r.price(), 0, 'COMMA')}">0</span> 円
-                      </div>
+                    </div>
+                    <div th:if="${r.salePrice() == null}">
+                      <span th:text="${#numbers.formatInteger(r.price(), 0, 'COMMA')}">0</span> 円
                     </div>
                   </td>
                   <td th:text="${r.categoryName()}">カテゴリ</td>
